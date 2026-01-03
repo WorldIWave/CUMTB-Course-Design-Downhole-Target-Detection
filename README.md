@@ -54,7 +54,7 @@ python -m src.train --data data/processed/data.yaml --model yolov8m.pt --imgsz 6
 ```
 
 ### 3. Stage 2：微调（imgsz=960）
-
+在640训练的模型基础上进行微调。
 ```bash
 yolo detect train   model=code/runs/detect/stage1_640/weights/best.pt   data=data/processed/data.yaml   imgsz=960   batch=8   epochs=50   device=0   workers=16   cache=disk   amp=True   mosaic=0.0   mixup=0.0   lr0=0.002   patience=15   name=stage2_960_ft
 ```
@@ -64,20 +64,20 @@ yolo detect train   model=code/runs/detect/stage1_640/weights/best.pt   data=dat
 ## 附录：训练辅助工具说明
 
 ### 1. TensorBoard 可视化
-
+训练过程中会输出TensorBoard缓存文件logdir
 - 启动命令：  
   ```bash
   tensorboard --logdir code/runs/detect/stage1_m_640/ --port 6006 --host 127.0.0.1
   ```
 
-- 若为远程训练，可在本地进行端口转发：  
+- 若为远程训练，可在本地进行端口转发，例如：  
   ```bash
   ssh -CNg -L 6006:127.0.0.1:6006 root@connect.westb.seetacloud.com -p 33576
   ```
   然后在本地浏览器打开 `http://127.0.0.1:6006/` 查看进度。
 
 ### 2. 使用 tmux 保持远程训练不中断
-
+远端训练关闭本地终端会导致训练中止，在本地打开远端终端即可。
 - 启动 tmux 会话：  
   ```bash
   tmux new -s yolo
@@ -102,7 +102,7 @@ yolo detect train   model=code/runs/detect/stage1_640/weights/best.pt   data=dat
 
 ## 推理测试
 
-完成阶段性训练后，可进行模型性能可视化：  
+完成阶段性训练后，可进行模型性能可视化，超参数可以进行调整，选择最佳即可：  
 ```bash
 python -m src.test   --weights code/runs/detect/stage1_640/weights/best.pt   --data /root/autodl-tmp/data/processed/data.yaml   --split test   --imgsz 640   --conf 0.25   --iou 0.6   --sample_n 50   --out_project code/runs/demo_test   --out_name stage1640
 ```
