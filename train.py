@@ -13,10 +13,10 @@ def parse_args():
     # core
     ap.add_argument("--data", type=str, default="data/processed/data.yaml")
     ap.add_argument("--model", type=str, default="yolov8m.pt")
-    ap.add_argument("--imgsz", type=int, default=960)
+    ap.add_argument("--imgsz", type=int, default=856)
     ap.add_argument("--epochs", type=int, default=200)
     ap.add_argument("--batch", type=int, default=4)
-    ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--workers", type=int, default=16)
     ap.add_argument("--device", type=str, default="0")
     ap.add_argument("--project", type=str, default="runs/detect")
     ap.add_argument("--name", type=str, default="longwall_yolov8")
@@ -29,15 +29,15 @@ def parse_args():
     # precision targeting
     ap.add_argument("--precision_target", type=float, default=0.98,
                     help="Target precision threshold for acceptance (operational).")
-    ap.add_argument("--conf_oper", type=float, default=0.25,
+    ap.add_argument("--conf_oper", type=float, default=0.7,
                     help="Operational confidence threshold used to compute precision/recall during training.")
     ap.add_argument("--iou_oper", type=float, default=0.60,
                     help="IoU threshold used in operational validation.")
-    ap.add_argument("--conf_sweep_every", type=int, default=0,
+    ap.add_argument("--conf_sweep_every", type=int, default=5,
                     help="If >0, run conf sweep every N epochs to find best conf reaching precision_target.")
-    ap.add_argument("--conf_sweep_min", type=float, default=0.05)
+    ap.add_argument("--conf_sweep_min", type=float, default=0.3)
     ap.add_argument("--conf_sweep_max", type=float, default=0.95)
-    ap.add_argument("--conf_sweep_steps", type=int, default=19)
+    ap.add_argument("--conf_sweep_steps", type=int, default=25)
 
     return ap.parse_args()
 
